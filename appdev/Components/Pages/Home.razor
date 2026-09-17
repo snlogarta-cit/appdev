@@ -1,0 +1,95 @@
+@page "/"
+@inject NyanStateService State
+@inject NavigationManager Nav
+@rendermode InteractiveServer
+
+<PageTitle>NyanVision - Go Full Nyan Mode!</PageTitle>
+
+<!-- Top Bar -->
+<header class="nyan-topbar">
+    <div class="nyan-logo-group" @onclick='() => Nav.NavigateTo("/")'>
+        <div class="nyan-logo-icon">🐱</div>
+        <div class="nyan-logo-text">
+            <span>NyanVision</span>
+            <span class="nyan-paw">🐾</span>
+        </div>
+    </div>
+    <button class="nyan-settings-btn" title="Settings / Whimsies" @onclick='() => Nav.NavigateTo("/settings")'>
+        ⚙️
+    </button>
+</header>
+
+<!-- Hero Section -->
+<section class="nyan-hero">
+    <div class="nyan-badge-pill">
+        <span>🌈</span>
+        <span>AI-powered kawaii nyan studio</span>
+        <span>🐱</span>
+    </div>
+    <h1 class="nyan-hero-title">
+        Go Full <span class="nyan-gradient-text">Nyan</span><br />Mode! ✨ ✨
+    </h1>
+    <p class="nyan-hero-subtitle">
+        Point your camera and let the kawaii magic happen 💕
+    </p>
+</section>
+
+<!-- Central Action Card -->
+<section class="nyan-center-card-wrapper">
+    <div class="nyan-center-card">
+        <div class="nyan-paws-icon">🐾</div>
+        <div class="nyan-active-filter-label">Active filter</div>
+        <div class="nyan-active-filter-value">
+            @State.ActiveFilter.Name @State.ActiveFilter.Emoji
+        </div>
+        <button class="nyan-btn-primary" @onclick='() => Nav.NavigateTo("/studio")'>
+            <span>🌈</span>
+            <span>Start Nyaning!</span>
+            <span>🐱</span>
+        </button>
+        <div class="nyan-card-footer-note">
+            No sign-up needed · 100% on-device ✨
+        </div>
+    </div>
+</section>
+
+<!-- Meme Presets Section -->
+<section class="nyan-presets-section">
+    <div class="nyan-presets-header">
+        <h2 class="nyan-presets-title">
+            <span>Meme Presets</span>
+            <span>🎭</span>
+        </h2>
+        <span class="nyan-count-badge">6 filters</span>
+    </div>
+
+    <div class="nyan-presets-grid">
+        @foreach (var filter in State.Filters.Take(6))
+        {
+            var isSelected = State.ActiveFilterId == filter.Id;
+            <div class="nyan-preset-card @(isSelected ? "active" : "")"
+                 @onclick="() => SelectFilter(filter.Id)">
+                <div class="nyan-preset-icon-box">
+                    @filter.IconEmoji
+                </div>
+                <div class="nyan-preset-name">
+                    @filter.Name @filter.Emoji
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<!-- Bottom Bar -->
+<footer class="nyan-bottom-bar">
+    <div class="nyan-bottom-pill">
+        ✨ Powered by <span class="nyan-highlight-pink">NyanVision</span> + <span class="nyan-highlight-green">Magic CV Engine</span> 💕
+    </div>
+</footer>
+
+@code {
+    private void SelectFilter(string filterId)
+    {
+        State.SetActiveFilter(filterId);
+    }
+}

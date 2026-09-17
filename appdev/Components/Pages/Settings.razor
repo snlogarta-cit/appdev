@@ -1,0 +1,181 @@
+@page "/settings"
+@inject NyanStateService State
+@inject NavigationManager Nav
+@rendermode InteractiveServer
+
+<PageTitle>NyanVision Whimsies 🎀</PageTitle>
+
+<div class="nyan-settings-page">
+    <!-- Top Bar -->
+    <header class="nyan-settings-topbar">
+        <button class="nyan-pill-btn" @onclick='() => Nav.NavigateTo("/")'>
+            <span>← Back to Nyan</span>
+        </button>
+        <h1 class="nyan-settings-title">
+            <span>NyanVision Whimsies</span>
+            <span>🎀</span>
+        </h1>
+    </header>
+
+    <!-- Card 1: Camera Setup -->
+    <section class="nyan-settings-card">
+        <div class="nyan-card-header">
+            <span>📷</span>
+            <span>Camera Setup</span>
+        </div>
+
+        <!-- Camera Input Dropdown -->
+        <div class="nyan-form-group">
+            <div class="nyan-field-label">Camera Input</div>
+            <div class="nyan-field-desc">Select your video capture device</div>
+            <select class="nyan-select" @bind="State.CameraInput">
+                <option value="Built-in Camera">📹 Built-in Camera</option>
+                <option value="USB Video Capture">📹 USB Video Capture</option>
+                <option value="Nyan Virtual Cam">✨ Nyan Virtual Cam</option>
+            </select>
+        </div>
+
+        <!-- Resolution Segmented Control -->
+        <div class="nyan-form-group">
+            <div class="nyan-field-label">Resolution</div>
+            <div class="nyan-field-desc">Higher = cuter but heavier</div>
+            <div class="nyan-segmented-control">
+                <button type="button"
+                        class="nyan-segmented-btn @(State.Resolution == "720p Cute ✨" ? "active-pink" : "")"
+                        @onclick='() => State.Resolution = "720p Cute ✨"'>
+                    720p Cute ✨
+                </button>
+                <button type="button"
+                        class="nyan-segmented-btn @(State.Resolution == "1080p Ultra Cute 💕" ? "active-pink" : "")"
+                        @onclick='() => State.Resolution = "1080p Ultra Cute 💕"'>
+                    1080p Ultra Cute 💕
+                </button>
+            </div>
+        </div>
+
+        <!-- Frame Rate Slider -->
+        <div class="nyan-form-group">
+            <div class="nyan-field-label">
+                <span>Frame Rate</span>
+                <span class="nyan-value-pill">@State.FrameRate fps</span>
+            </div>
+            <div class="nyan-field-desc">Frames per sparkle</div>
+            <input type="range"
+                   min="15"
+                   max="120"
+                   step="5"
+                   class="nyan-slider"
+                   @bind="State.FrameRate"
+                   @bind:event="oninput" />
+            <div class="nyan-slider-markers">
+                <span>15 🐌</span>
+                <span>60 😸</span>
+                <span>120 🚀</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Card 2: Computer Vision Magic -->
+    <section class="nyan-settings-card">
+        <div class="nyan-card-header">
+            <span>🧠</span>
+            <span>Computer Vision Magic</span>
+        </div>
+
+        <!-- Show Face Mesh Sparkles Toggle -->
+        <div class="nyan-toggle-row">
+            <div>
+                <div class="nyan-field-label">Show Face Mesh Sparkles</div>
+                <div class="nyan-field-desc" style="margin-bottom:0;">Show sparkle dots on your face</div>
+            </div>
+            <label class="nyan-toggle-switch">
+                <input type="checkbox" @bind="State.ShowFaceMeshSparkles" />
+                <span class="nyan-toggle-slider"></span>
+            </label>
+        </div>
+
+        <!-- GPU Turbo Mode Toggle -->
+        <div class="nyan-toggle-row">
+            <div>
+                <div class="nyan-field-label">GPU Turbo Mode 🚀</div>
+                <div class="nyan-field-desc" style="margin-bottom:0;">Uses your graphics card for faster AI</div>
+            </div>
+            <label class="nyan-toggle-switch">
+                <input type="checkbox" @bind="State.GpuTurboMode" />
+                <span class="nyan-toggle-slider"></span>
+            </label>
+        </div>
+
+        <!-- Meme Model Sensitivity Slider -->
+        <div class="nyan-form-group" style="margin-top: 1.25rem;">
+            <div class="nyan-field-label">
+                <span>Meme Model Sensitivity</span>
+                <span class="nyan-value-pill">@State.MemeModelSensitivity%</span>
+            </div>
+            <div class="nyan-field-desc">How dramatically to react to your face</div>
+            <input type="range"
+                   min="0"
+                   max="100"
+                   class="nyan-slider"
+                   @bind="State.MemeModelSensitivity"
+                   @bind:event="oninput" />
+            <div class="nyan-slider-markers">
+                <span>🥸 Chill</span>
+                <span>🤪 Chaotic</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Card 3: Save & Output -->
+    <section class="nyan-settings-card">
+        <div class="nyan-card-header">
+            <span>💾</span>
+            <span>Save & Output</span>
+        </div>
+
+        <!-- Save Directory -->
+        <div class="nyan-form-group">
+            <div class="nyan-field-label">Save Directory</div>
+            <div class="nyan-field-desc">Where to save your silly videos</div>
+            <div class="nyan-input-group">
+                <input type="text" class="nyan-text-input" @bind="State.SaveDirectory" />
+                <button type="button" class="nyan-icon-btn" title="Browse Directory" @onclick="PickFolder">
+                    📁
+                </button>
+            </div>
+        </div>
+
+        <!-- Video Format Segmented Control -->
+        <div class="nyan-form-group">
+            <div class="nyan-field-label">Video Format</div>
+            <div class="nyan-field-desc">Output container format</div>
+            <div class="nyan-segmented-control">
+                <button type="button"
+                        class="nyan-segmented-btn @(State.VideoFormat == "WEBM" ? "active-mint" : "")"
+                        @onclick='() => State.VideoFormat = "WEBM"'>
+                    🌐 WEBM
+                </button>
+                <button type="button"
+                        class="nyan-segmented-btn @(State.VideoFormat == "MP4" ? "active-mint" : "")"
+                        @onclick='() => State.VideoFormat = "MP4"'>
+                    🎬 MP4
+                </button>
+            </div>
+        </div>
+    </section>
+</div>
+
+@code {
+    private void PickFolder()
+    {
+        // Simple playful mock folder picker
+        if (State.SaveDirectory.Contains("BoopCam"))
+        {
+            State.SaveDirectory = "~/Videos/KawaiiNyan";
+        }
+        else
+        {
+            State.SaveDirectory = "~/Movies/BoopCam";
+        }
+    }
+}
