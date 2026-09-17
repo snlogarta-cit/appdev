@@ -1,0 +1,199 @@
+@page "/studio"
+@inject NyanStateService State
+@inject NavigationManager Nav
+@rendermode InteractiveServer
+
+<PageTitle>NyanVision - Studio</PageTitle>
+
+<div class="nyan-studio-container">
+    <!-- Top Bar -->
+    <header class="nyan-studio-topbar">
+        <button class="nyan-pill-btn" @onclick='() => Nav.NavigateTo("/")'>
+            <span>← Exit Studio</span>
+        </button>
+
+        <div class="nyan-studio-top-stats">
+            <div class="nyan-stat-badge sparkle">
+                <span>✨</span>
+                <span>@State.FrameRate Sparkles/s</span>
+            </div>
+            <div class="nyan-stat-badge filter">
+                <span>@State.ActiveFilter.Emoji</span>
+                <span>@State.ActiveFilter.ShortName</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Camera Viewport Area -->
+    <main class="nyan-camera-viewport-wrapper">
+        @if (showFlash)
+        {
+            <div style="position: absolute; inset: 0; background: white; z-index: 50; border-radius: 24px; animation: flashFade 0.4s ease-out forwards; pointer-events: none;"></div>
+        }
+
+        <div class="nyan-camera-viewport">
+            <!-- Glowing Corner Brackets -->
+            <div class="corner-bracket top-left"></div>
+            <div class="corner-bracket top-right"></div>
+            <div class="corner-bracket bottom-left"></div>
+            <div class="corner-bracket bottom-right"></div>
+
+            <!-- Kawaii Viewport Decorations matching Screen 2 -->
+            <div class="decor-cat-top-1">🐱</div>
+            <div class="decor-cat-top-2">🐱</div>
+            <div style="position: absolute; top: 18%; left: 42%; font-size: 1rem; color: #ffd269;">✨</div>
+            <div style="position: absolute; top: 20%; right: 42%; font-size: 1rem; color: #ffd269;">✨</div>
+
+            <div style="position: absolute; top: 32%; left: 28%; font-size: 1.3rem;">💫</div>
+            <div style="position: absolute; bottom: 35%; right: 28%; font-size: 1.3rem;">⭐</div>
+
+            <!-- Colored glow dots -->
+            <div class="decor-dot" style="top: 36%; left: 49.5%; color: #81ecec; background: #81ecec;"></div>
+            <div class="decor-dot" style="top: 42%; left: 41%; color: #ff7675; background: #ff7675;"></div>
+            <div class="decor-dot" style="top: 42%; right: 41%; color: #ff7675; background: #ff7675;"></div>
+            <div class="decor-dot" style="top: 52%; left: 43%; color: #55efc4; background: #55efc4;"></div>
+            <div class="decor-dot" style="top: 52%; right: 43%; color: #55efc4; background: #55efc4;"></div>
+            <div class="decor-dot" style="top: 58%; left: 49.5%; color: #fd79a8; background: #fd79a8;"></div>
+
+            <!-- Side pink flowers -->
+            <div class="decor-flower-left">
+                🌸
+                <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#ffd700; margin-left: 4px; box-shadow: 0 0 6px #ffd700;"></span>
+            </div>
+            <div class="decor-flower-right">
+                <span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#ffd700; margin-right: 4px; box-shadow: 0 0 6px #ffd700;"></span>
+                🌸
+            </div>
+
+            <!-- Face Mesh Sparkles overlay if enabled -->
+            @if (State.ShowFaceMeshSparkles)
+            {
+                <div style="position: absolute; inset: 0; pointer-events: none; z-index: 4;">
+                    <div style="position: absolute; top: 46%; left: 48%; font-size: 0.75rem; color: #ffeaa7; filter: drop-shadow(0 0 6px #ffeaa7);">✦</div>
+                    <div style="position: absolute; top: 46%; right: 48%; font-size: 0.75rem; color: #ffeaa7; filter: drop-shadow(0 0 6px #ffeaa7);">✦</div>
+                    <div style="position: absolute; top: 55%; left: 49.5%; font-size: 0.65rem; color: #fab1a0;">✦</div>
+                </div>
+            }
+
+            <!-- Center Preview Label & Icon -->
+            <div class="nyan-preview-content">
+                <span class="nyan-preview-cam-icon">📷</span>
+                <div class="nyan-preview-label">Camera Preview</div>
+                @if (wandSparkleActive)
+                {
+                    <div style="margin-top: 0.5rem; color: #ff9fc7; font-size: 0.9rem; animation: pulse 0.6s infinite alternate;">
+                        ✨ Super Kawaii Magic Activated! ✨
+                    </div>
+                }
+            </div>
+        </div>
+    </main>
+
+    <!-- Studio Bottom Controls -->
+    <footer class="nyan-studio-bottom">
+        <!-- Filter Selector Chips -->
+        <div class="nyan-filter-picker-bar">
+            @foreach (var filter in studioFilters)
+            {
+                var isSelected = State.ActiveFilterId == filter.Id;
+                <button class="nyan-filter-chip @(isSelected ? "active" : "")"
+                        @onclick="() => State.SetActiveFilter(filter.Id)">
+                    <span>@filter.ShortName</span>
+                    <span>@filter.Emoji</span>
+                </button>
+            }
+        </div>
+
+        <!-- Action Row -->
+        <div class="nyan-action-row">
+            <!-- Left magic wand -->
+            <div class="nyan-action-left">
+                <button class="nyan-circle-btn" title="Cast Kawaii Magic" @onclick="TriggerWand">
+                    🪄
+                </button>
+            </div>
+
+            <!-- Center strawberry shutter button -->
+            <button class="nyan-shutter-btn" title="Snap Photo" @onclick="SnapPhoto">
+                🍓
+            </button>
+
+            <!-- Right utilities -->
+            <div class="nyan-action-right">
+                <button class="nyan-circle-btn" title="View Boop Snapshots" @onclick="ToggleGallery">
+                    🖼️
+                </button>
+                <button class="nyan-circle-btn" title="Flip Camera" @onclick="FlipCamera">
+                    🔄
+                </button>
+            </div>
+        </div>
+    </footer>
+</div>
+
+<!-- Snapshot Gallery Modal -->
+@if (showGalleryModal)
+{
+    <div style="position: fixed; inset: 0; background: rgba(10, 8, 18, 0.85); z-index: 100; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(8px);"
+         @onclick="() => showGalleryModal = false">
+        <div class="nyan-center-card" style="max-width: 500px;" @onclick:stopPropagation="true">
+            <h3 style="margin-top:0; color: #ff9ec6; font-size: 1.4rem;">🍓 BoopCam Snaps!</h3>
+            <p style="color: var(--nyan-text-muted); font-size: 0.9rem;">
+                Saved to <code style="color: var(--nyan-mint); background: #13101e; padding: 2px 6px; border-radius: 6px;">@State.SaveDirectory</code>
+            </p>
+            <div style="background: #141021; border-radius: 16px; padding: 1.5rem; margin: 1rem 0; border: 1px dashed rgba(255, 94, 154, 0.4);">
+                <div style="font-size: 3rem; margin-bottom: 0.5rem;">📸 ✨</div>
+                <div style="font-weight: 600; color: #ffffff;">@(capturedCount == 0 ? "No photos snapped yet!" : $"{capturedCount} cute photo(s) captured in {State.VideoFormat}!")</div>
+                <div style="font-size: 0.8rem; color: var(--nyan-text-dim); margin-top: 0.25rem;">Active Filter: @State.ActiveFilter.Name @State.ActiveFilter.Emoji</div>
+            </div>
+            <button class="nyan-btn-primary" style="padding: 0.65rem 1.5rem; font-size: 1rem;" @onclick="() => showGalleryModal = false">
+                Close
+            </button>
+        </div>
+    </div>
+}
+
+<style>
+    @@keyframes flashFade {
+        0% { opacity: 0.9; }
+        100% { opacity: 0; }
+    }
+</style>
+
+@code {
+    private bool showFlash = false;
+    private bool wandSparkleActive = false;
+    private bool showGalleryModal = false;
+    private int capturedCount = 0;
+
+    private List<FilterItem> studioFilters => State.Filters.Take(6).ToList();
+
+    private async Task SnapPhoto()
+    {
+        showFlash = true;
+        capturedCount++;
+        StateHasChanged();
+        await Task.Delay(250);
+        showFlash = false;
+        StateHasChanged();
+    }
+
+    private async Task TriggerWand()
+    {
+        wandSparkleActive = true;
+        StateHasChanged();
+        await Task.Delay(1500);
+        wandSparkleActive = false;
+        StateHasChanged();
+    }
+
+    private void ToggleGallery()
+    {
+        showGalleryModal = !showGalleryModal;
+    }
+
+    private void FlipCamera()
+    {
+        State.CameraInput = State.CameraInput == "Built-in Camera" ? "USB Video Capture" : "Built-in Camera";
+    }
+}
