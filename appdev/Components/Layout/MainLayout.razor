@@ -11,8 +11,10 @@
     @Body
 </div>
 
-<div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
+<div id="blazor-error-ui" class="hidden fixed bottom-0 left-0 right-0 z-50 bg-amber-200/90 text-amber-950 font-medium px-5 py-3 shadow-lg flex items-center justify-between">
+    <span>An unhandled error has occurred.</span>
+    <div class="flex items-center gap-3">
+        <a href="" class="reload underline hover:text-black">Reload</a>
+        <a class="dismiss cursor-pointer font-bold px-2 py-0.5 rounded hover:bg-black/10">✕</a>
+    </div>
 </div>

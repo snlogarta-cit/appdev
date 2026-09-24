@@ -1,0 +1,18 @@
+@import "tailwindcss";
+
+@theme {
+  --color-nyan-bg: #13101e;
+  --color-nyan-card: #1b162b;
+  --color-nyan-card-subtle: #211b34;
+  --color-nyan-border: rgba(98, 76, 138, 0.4);
+  --color-nyan-border-active: #ff5e9a;
+  --color-nyan-pink: #ff5e9a;
+  --color-nyan-pink-light: #ffa6c8;
+  --color-nyan-pink-glow: rgba(255, 94, 154, 0.45);
+  --color-nyan-mint: #45e3ab;
+  --color-nyan-mint-glow: rgba(69, 227, 171, 0.35);
+  --color-nyan-yellow: #ffd05b;
+  --color-nyan-muted: #9f94bd;
+  --color-nyan-dim: #786b96;
+}
+
