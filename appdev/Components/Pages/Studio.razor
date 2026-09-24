@@ -92,11 +92,17 @@
     <!-- Studio Bottom Controls -->
     <footer class="nyan-studio-bottom">
         <!-- Filter Selector Chips -->
-        <div class="nyan-filter-picker-bar">
-            @foreach (var filter in studioFilters)
+        <div class="nyan-filter-picker-bar"
+             style="display:flex; flex-wrap:nowrap; justify-content:flex-start;
+                    overflow-x:scroll; overflow-y:hidden;
+                    gap:0.65rem; padding-bottom:0.5rem; padding-top:0.25rem;
+                    scrollbar-width:thin;
+                    scrollbar-color:rgba(255,208,91,0.5) rgba(43,33,67,0.4);">
+            @foreach (var filter in State.Filters)
             {
                 var isSelected = State.ActiveFilterId == filter.Id;
                 <button class="nyan-filter-chip @(isSelected ? "active" : "")"
+                        style="flex:0 0 auto; white-space:nowrap;"
                         @onclick="() => State.SetActiveFilter(filter.Id)">
                     <span>@filter.ShortName</span>
                     <span>@filter.Emoji</span>
@@ -166,7 +172,6 @@
     private bool showGalleryModal = false;
     private int capturedCount = 0;
 
-    private List<FilterItem> studioFilters => State.Filters.Take(6).ToList();
 
     private async Task SnapPhoto()
     {
