@@ -19,6 +19,20 @@
 <body>
     <Routes @rendermode="InteractiveServer" />
     <script src="_framework/blazor.web.js"></script>
+
+    
+    <script>
+        async function showNativeDirectoryPicker() {
+            // Shows the native OS directory selector window
+            const dirHandle = await window.showDirectoryPicker();
+            
+            // Note: Browser security still hides the absolute "C:\..." path, 
+            // but you get the authentic folder handle name and internal access.
+            return dirHandle.name; 
+        }
+    </script>
+    
+    
 </body>
 
 </html>

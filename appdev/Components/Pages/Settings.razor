@@ -1,5 +1,7 @@
 @page "/settings"
+@using System.Threading.Tasks
 @inject NyanStateService State
+@inject IJSRuntime JS
 @inject NavigationManager Nav
 @rendermode InteractiveServer
 
@@ -167,16 +169,33 @@
 </div>
 
 @code {
-    private void PickFolder()
+
+    private string selectedFolderName = "";
+    private async Task PickFolder()
     {
+        await SelectDirectory();
         // Simple playful mock folder picker
-        if (State.SaveDirectory.Contains("BoopCam"))
+        //if (State.SaveDirectory.Contains("BoopCam"))
+        //{
+        //    State.SaveDirectory = "~/Videos/KawaiiNyan";
+        //}
+        //else
+        //{
+        //    State.SaveDirectory = "~/Movies/BoopCam";
+        //}
+    }
+
+    private async Task SelectDirectory()
+    {
+        try
         {
-            State.SaveDirectory = "~/Videos/KawaiiNyan";
+            // Trigger the native browser directory picker
+            selectedFolderName = await JS.InvokeAsync<string>("showNativeDirectoryPicker");
         }
-        else
+        catch (Exception ex)
         {
-            State.SaveDirectory = "~/Movies/BoopCam";
+            // Handles user canceling the picker
+            Console.WriteLine($"Directory selection canceled or failed: {ex.Message}");
         }
     }
 }
