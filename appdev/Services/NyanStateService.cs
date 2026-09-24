@@ -20,7 +20,9 @@ public class NyanStateService
         new FilterItem { Id = "blush", Name = "Blush", ShortName = "Blush", Emoji = "🌸", IconEmoji = "🌸", Color = "#ff9ec6" },
         new FilterItem { Id = "nyan-trail", Name = "Nyan Trail", ShortName = "Nyan", Emoji = "🌈", IconEmoji = "🌈", Color = "#ff69b4" },
         new FilterItem { Id = "star-power", Name = "Star Power", ShortName = "Stars", Emoji = "⭐", IconEmoji = "⭐", Color = "#ffd700" },
-        new FilterItem { Id = "froggy", Name = "Froggy Mode", ShortName = "Froggy", Emoji = "🐸", IconEmoji = "🐸", Color = "#7bed9f" }
+        new FilterItem { Id = "froggy", Name = "Froggy Mode", ShortName = "Froggy", Emoji = "🐸", IconEmoji = "🐸", Color = "#7bed9f" },
+        new FilterItem { Id = "cat-girl", Name = "Cat Girl Madness", ShortName = "Cat Girl", Emoji = "🐱", IconEmoji = "🐱", Color = "#ffb347" },
+        new FilterItem { Id = "senpai", Name = "Senpai Blush", ShortName = "Senpai", Emoji = "🥺", IconEmoji = "🥺", Color = "#ffb347" },
     };
 
     public string ActiveFilterId { get; set; } = "blush";

@@ -307,12 +307,41 @@ a {
 }
 
 .nyan-presets-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   gap: 1.1rem;
+  /* Show ~6 cards then scroll: 6×140px + 5×1.1rem gap ≈ 929px */
+  width: 100%;
+  max-width: calc(6 * 140px + 5 * 1.1rem);
+  overflow-x: auto;
+  overflow-y: visible;
+  padding-bottom: 0.75rem;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 94, 154, 0.5) rgba(43, 33, 67, 0.4);
+}
+
+.nyan-presets-grid::-webkit-scrollbar {
+  height: 6px;
+}
+
+.nyan-presets-grid::-webkit-scrollbar-track {
+  background: rgba(43, 33, 67, 0.4);
+  border-radius: 9999px;
+}
+
+.nyan-presets-grid::-webkit-scrollbar-thumb {
+  background: rgba(255, 94, 154, 0.5);
+  border-radius: 9999px;
+}
+
+.nyan-presets-grid::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 94, 154, 0.8);
 }
 
 .nyan-preset-card {
+  flex: 0 0 140px;
   background: var(--nyan-bg-card);
   border: 1.5px solid rgba(95, 72, 133, 0.4);
   border-radius: 20px;
@@ -818,7 +847,9 @@ a {
 }
 
 .nyan-slider {
-  flex: 1;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
   -webkit-appearance: none;
   appearance: none;
   height: 6px;

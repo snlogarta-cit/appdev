@@ -60,14 +60,19 @@
             <span>Meme Presets</span>
             <span>🎭</span>
         </h2>
-        <span class="nyan-count-badge">6 filters</span>
+        <span class="nyan-count-badge">@State.Filters.Count filters</span>
     </div>
 
-    <div class="nyan-presets-grid">
-        @foreach (var filter in State.Filters.Take(6))
+    <div class="nyan-presets-grid"
+         style="display:flex; flex-direction:row; flex-wrap:nowrap; gap:1.1rem;
+                width:100%; max-width:calc(6 * 140px + 5 * 1.1rem);
+                overflow-x:scroll; overflow-y:hidden;
+                padding-bottom:0.75rem; box-sizing:border-box;">
+        @foreach (var filter in State.Filters)
         {
             var isSelected = State.ActiveFilterId == filter.Id;
             <div class="nyan-preset-card @(isSelected ? "active" : "")"
+                 style="flex:0 0 140px; min-width:140px;"
                  @onclick="() => SelectFilter(filter.Id)">
                 <div class="nyan-preset-icon-box">
                     @filter.IconEmoji
